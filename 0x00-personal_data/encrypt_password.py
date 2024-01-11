@@ -3,7 +3,7 @@
 Module encrypt_password
 '''
 import bcrypt
-from bcrypt import hashpw, checkpw
+from bcrypt import hashpw
 
 
 def hash_password(password: str) -> bytes:
@@ -19,6 +19,6 @@ def is_valid(hashed_password: bytes, password: str) -> bool:
     ''' function that validates password '''
     valid = False
     password = password.encode()
-    if checkpw(password, hashed_password):
+    if bcrypt.checkpw(password, hashed_password):
         valid = True
     return valid
