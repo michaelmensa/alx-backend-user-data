@@ -10,6 +10,6 @@ def hash_password(password: str) -> bytes:
     ''' function that expects one string arg and
     returns a salted, hashed password
     '''
-    password = password.encode()
+    password = b'password'
     hashed = hashpw(password, bcrypt.gensalt())
     return hashed
