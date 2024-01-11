@@ -17,5 +17,8 @@ def hash_password(password: str) -> bytes:
 
 def is_valid(hashed_password: bytes, password: str) -> bool:
     ''' function that validates password '''
+    valid = False
     password = password.encode()
-    return checkpw(password, hashed_password)
+    if checkpw(password, hashed_password):
+        valid = True
+    return valid
