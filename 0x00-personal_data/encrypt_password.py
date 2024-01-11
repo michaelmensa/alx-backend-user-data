@@ -3,6 +3,7 @@
 Module encrypt_password
 '''
 import bcrypt
+from bcrypt import hashpw
 
 
 def hash_password(password: str):
@@ -10,5 +11,5 @@ def hash_password(password: str):
     returns a salted, hashed password
     '''
     password = b'{password}'
-    hashed = bcrypt.hashpw(password, bcrypt.gensalt())
+    hashed = hashpw(password, bcrypt.gensalt())
     return hashed
