@@ -6,7 +6,7 @@ import bcrypt
 from bcrypt import hashpw
 
 
-def hash_password(password: str):
+def hash_password(password: str) -> bytes:
     ''' function that expects one string arg and
     returns a salted, hashed password
     '''
