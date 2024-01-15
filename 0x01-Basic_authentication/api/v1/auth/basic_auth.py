@@ -22,7 +22,7 @@ class BasicAuth(Auth):
             return base64_cred
         else:
             return None
-    
+
     def decode_base64_authorization_header(self,
                                            authorization_header: str) -> str:
         '''
