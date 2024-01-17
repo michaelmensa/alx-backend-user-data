@@ -4,6 +4,7 @@ Module session_auth.py: Session Authentication
 '''
 from api.v1.auth.auth import Auth
 import uuid
+from models.user import User
 
 
 class SessionAuth(Auth):
@@ -42,3 +43,22 @@ class SessionAuth(Auth):
                 if key == session_id:
                     user_id = self.user_id_by_session_id.get(session_id)
                     return user_id
+
+    def current_user(self, request=None):
+        ''' method that (overload) returns a User instance based
+        based on a cookie value:
+        must use self.session_cookie(...) and self.user_id_for_session_id(...)
+        to return the User ID based on the cookie _my_session_id
+        you will be able to retrieve a User instance from the db- You can
+        use User.get(...) for retrieving a User from the db
+        '''
+        if request:
+            try:
+                # get the cookie from the request
+                cookie = self.session_cookie(request)
+                # get user_id from the cookie value
+                user_id = self.user_id_for_session_id(cookie)
+                # get user using User.get
+                return User.get(user_id)
+            except Exception:
+                return None
