@@ -5,6 +5,7 @@ Module session_auth.py: Session Authentication
 from api.v1.auth.auth import Auth
 import uuid
 
+
 class SessionAuth(Auth):
     ''' class that implements session authentication.
     inherits from Auth class '''
