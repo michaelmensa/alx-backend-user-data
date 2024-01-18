@@ -5,7 +5,7 @@ Module session_auth.py: New view for Session Authentication
 from api.v1.auth.session_auth import SessionAuth
 from api.v1.views import app_views
 from models.user import User
-from flask import request, jsonify, make_response
+from flask import request, jsonify, make_response, abort
 
 
 @app_views.route('/auth_session/login', methods=['POST'], strict_slashes=False)
@@ -41,3 +41,14 @@ def session_auth():
         return jsonify({'error': 'wrong password'}), 401
     except Exception:
         return None
+
+
+@app_views.route('/auth_session/logout',
+                 methods=['DELETE'], strict_slashes=False)
+def delete_session():
+    ''' function that deletes session / logout '''
+    from api.v1.app import auth
+    destroy_session = auth.destroy_session(request)
+    if destroy_session is False:
+        abort(404)
+    return jsonify({}), 200
