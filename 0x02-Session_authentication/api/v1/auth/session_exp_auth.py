@@ -2,6 +2,7 @@
 '''
 Module session_exp_auth.py: Session authentication with an expiry
 '''
+from models.user import User
 from flask import request
 from datetime import datetime, timedelta
 from os import getenv
