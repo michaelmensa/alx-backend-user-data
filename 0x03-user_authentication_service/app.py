@@ -2,7 +2,7 @@
 '''
 Module app.py - Basic Flask app
 '''
-from flask import Flask, jsonify, request, abort, redirect, url_for
+from flask import Flask, jsonify, request, abort, redirect
 from auth import Auth
 
 
@@ -18,12 +18,12 @@ def index():
 
 @app.route('/users', methods=['POST'], strict_slashes=False)
 def users():
-    ''' function thast registers a user '''
+    ''' function that registers a user '''
     try:
         email = request.form['email']
         password = request.form['password']
         user = AUTH.register_user(email, password)
-        return jsonify({'email': email, 'message': 'user created'})
+        return jsonify({'email': email, 'message': 'user created'}), 200
     except Exception:
         return jsonify({'message': 'email already registered'}), 400
 
@@ -50,17 +50,12 @@ def login():
 @app.route('/sessions', methods=['DELETE'], strict_slashes=False)
 def logout():
     ''' function that logs out a user. user must be an existing user '''
-    try:
-        session_id = request.form['session_id']
-        user = AUTH.get_user_from_session_id(session_id)
-        if user:
-            user_id = user.id
-            AUTH.destroy_session(user_id)
-            return redirect('/')
-        else:
-            abort(403)
-    except Exception:
+    session_id = request.cookies.get('session_id')
+    user = AUTH.get_user_from_session_id(session_id)
+    if user is None:
         abort(403)
+    AUTH.destroy_session(user.id)
+    return redirect("/")
 
 
 @app.route('/profile', methods=['GET'], strict_slashes=False)
