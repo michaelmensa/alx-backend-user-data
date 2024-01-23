@@ -7,7 +7,6 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
 
 from user import Base, User
-from typing import TypeVar
 
 from sqlalchemy.exc import InvalidRequestError
 from sqlalchemy.orm.exc import NoResultFound
@@ -34,7 +33,7 @@ class DB:
             self.__session = DBSession()
         return self.__session
 
-    def add_user(self, email: str, hashed_password: str) -> TypeVar('User'):
+    def add_user(self, email: str, hashed_password: str) -> User:
         ''' method that adds user with email and password provided
         returns User '''
         user = User(email=email, hashed_password=hashed_password)
@@ -43,7 +42,7 @@ class DB:
 
         return user
 
-    def find_user_by(self, **kwargs) -> TypeVar('User'):
+    def find_user_by(self, **kwargs) -> User:
         ''' method that takes in arbitrary keyword args and returns
         the first row found in the users table as filterd by the
         methods input args.
