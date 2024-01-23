@@ -70,7 +70,8 @@ class Auth():
             pass
 
     def get_user_from_session_id(self,
-            session_id: str) -> Union[TypeVar('User'), None]:
+                                 session_id: str)
+    -> Union[TypeVar('User'), None]:
         ''' method that returns either User or None from session id '''
         try:
             user = self._db.find_user_by(session_id=session_id)
@@ -87,8 +88,16 @@ class Auth():
         '''
         try:
             user = self._db.find_user_by(id=user_id)
-            if user.session_id:
+            if user.session_id is not None:
                 user.session_id = None
             return None
         except NoResultFound:
             pass
+
+    def get_reset_password_token(self, email: str) -> str:
+        ''' method that gets reset password token '''
+        user = self._db.find_user_by(email=email)
+        if user:
+            raise ValueError
+        user.reset_token = _generate_uuid()
+        return user.reset_token
