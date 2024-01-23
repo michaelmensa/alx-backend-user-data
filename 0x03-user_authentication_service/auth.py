@@ -92,7 +92,7 @@ class Auth():
     def get_reset_password_token(self, email: str) -> str:
         ''' method that gets reset password token '''
         user = self._db.find_user_by(email=email)
-        if user:
+        if not user:
             raise ValueError
         user.reset_token = _generate_uuid()
         return user.reset_token
