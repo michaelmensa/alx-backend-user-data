@@ -2,7 +2,7 @@
 '''
 Module app.py - Basic Flask app
 '''
-from flask import Flask, jsonify, request, abort
+from flask import Flask, jsonify, request, abort, redirect, url_for
 from auth import Auth
 
 
@@ -45,6 +45,40 @@ def login():
         return response
     except Exception:
         abort(401)
+
+
+@app.route('/sessions', methods=['DELETE'], strict_slashes=False)
+def logout():
+    ''' function that logs out a user. user must be an existing user '''
+    try:
+        session_id = request.form['session_id']
+        user = AUTH.get_user_from_session_id(session_id)
+        if user:
+            user_id = user.id
+            AUTH.destroy_session(user_id)
+            return redirect('/')
+        else:
+            abort(403)
+    except Exception:
+        abort(403)
+
+
+@app.route('/profile', methods=['GET'], strict_slashes=False)
+def profile():
+    ''' function that implements the respond to the GET /profile '''
+    session_id = request.cookies.get('session_id')
+    user = AUTH.get_user_from_session_id(session_id)
+
+    if session_id is None or not user:
+        abort(403)
+    return jsonify({'email': user.email}), 200
+
+
+@app.route('/reset_password', methods=['POST'], strict_slashes=False)
+def get_reset_password_token():
+    ''' function that respond to /reset_password route '''
+    email = request.form['email']
+    
 
 
 if __name__ == '__main__':
