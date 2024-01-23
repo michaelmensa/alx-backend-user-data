@@ -32,19 +32,16 @@ def users():
 def login():
     ''' function that logs in a user
     user must be an existing user '''
-    try:
-        email = request.form['email']
-        password = request.form['password']
-        if not AUTH.valid_login(email, password):
-            abort(401, description="Invalid login credentials")
-        user_session = AUTH.create_session(email)
-
-        response = jsonify({'email': email, 'message': 'logged in'})
-        response.set_cookie('session_id', user_session)
-
-        return response
-    except Exception:
+    email = request.form['email']
+    password = request.form['password']
+    if not AUTH.valid_login(email, password):
         abort(401)
+    session_id = AUTH.create_session(email)
+
+    response = jsonify({'email': email, 'message': 'logged in'})
+    response.set_cookie('session_id', session_id)
+
+    return response
 
 
 @app.route('/sessions', methods=['DELETE'], strict_slashes=False)
