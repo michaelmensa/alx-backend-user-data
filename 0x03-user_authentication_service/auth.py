@@ -5,7 +5,6 @@ Module auth.py: user authentication
 import bcrypt
 from db import DB
 from user import User
-from typing import TypeVar, Union
 from sqlalchemy.orm.exc import NoResultFound
 import uuid
 
@@ -13,9 +12,7 @@ import uuid
 def _hash_password(password: str) -> bytes:
     ''' method that takes a password string arg
     and return bytes '''
-    password = password.encode()
-    hashed_password = bcrypt.hashpw(password, bcrypt.gensalt())
-    return hashed_password
+    return bcrypt.hashpw(password.encode(), bcrypt.gensalt())
 
 
 def _generate_uuid():
@@ -30,7 +27,7 @@ class Auth():
         ''' constructor method '''
         self._db = DB()
 
-    def register_user(self, email: str, password: str) -> TypeVar('User'):
+    def register_user(self, email: str, password: str) -> User:
         ''' method that takes email, and password and returns
         a User Object '''
         try:
@@ -69,9 +66,7 @@ class Auth():
         except NoResultFound:
             pass
 
-    def get_user_from_session_id(self,
-                                 session_id: str)
-    -> Union[TypeVar('User'), None]:
+    def get_user_from_session_id(self, session_id: str) -> User, None:
         ''' method that returns either User or None from session id '''
         try:
             user = self._db.find_user_by(session_id=session_id)
