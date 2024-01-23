@@ -95,4 +95,5 @@ class Auth():
         if not user:
             raise ValueError
         user.reset_token = _generate_uuid()
+        self._db.update_user(user.id, reset_token=user.reset_token)
         return user.reset_token
