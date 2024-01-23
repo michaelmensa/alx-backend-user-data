@@ -12,7 +12,7 @@ import uuid
 def _hash_password(password: str) -> bytes:
     ''' method that takes a password string arg
     and return bytes '''
-    return bcrypt.hashpw(b"password", bcrypt.gensalt())
+    return bcrypt.hashpw(password.encode(), bcrypt.gensalt())
 
 
 def _generate_uuid():
