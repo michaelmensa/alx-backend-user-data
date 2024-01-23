@@ -78,7 +78,6 @@ def profile():
 def get_reset_password_token():
     ''' function that respond to /reset_password route '''
     email = request.form['email']
-    
 
 
 if __name__ == '__main__':
