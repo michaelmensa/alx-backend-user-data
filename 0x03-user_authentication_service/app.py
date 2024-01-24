@@ -45,16 +45,14 @@ def login():
 
 
 @app.route('/sessions', methods=['DELETE'], strict_slashes=False)
-@app.route('/', methods=['GET'], strict_slashes=False)
 def logout():
     ''' function that logs out a user. user must be an existing user '''
     session_id = request.cookies.get('session_id')
-    try:
-        user = AUTH.get_user_from_session_id(session_id)
-        AUTH.destroy_session(user.id)
-        return redirect("/")
-    except Exception:
+    user = AUTH.get_user_from_session_id(session_id)
+    if user is None:
         abort(403)
+    AUTH.destroy_session(user.id)
+    return redirect("/")
 
 
 @app.route('/profile', methods=['GET'], strict_slashes=False)
