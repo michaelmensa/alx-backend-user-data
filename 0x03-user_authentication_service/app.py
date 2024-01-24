@@ -45,6 +45,7 @@ def login():
 
 
 @app.route('/sessions', methods=['DELETE'], strict_slashes=False)
+app.route('/', methods=['GET'], strict_slashes=False)
 def logout():
     ''' function that logs out a user. user must be an existing user '''
     session_id = request.cookies.get('session_id')
